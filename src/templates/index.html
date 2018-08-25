@@ -1,0 +1,124 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HWDR</title>
+    <style type="text/css">
+        .container {
+            display: flex;
+            flex-direction: row;
+            margin: 50px;
+            padding: 10px;   
+        }
+        .result {
+            margin-left: 50px;
+        }
+        .btn {
+            width: 100px;
+            height: 50px;
+            border-radius: 7px;
+            border: 1px solid #fff;
+            outline: none
+        }
+        .clear {
+            background: green;
+        }
+        .predict {
+            background: steelblue;
+        }
+        .clear:hover {
+            background: #fff;
+            color: green;
+            transition: 0.7s all;
+        }
+        .predict:hover {
+            background: #fff;
+            color: steelblue;
+            transition: 0.7s all
+        }
+    </style>
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/paper-full.min.js' %}"></script>
+    <script type="text/javascript">
+        paper.install(window);
+        window.onload = function() {
+            var my_canvas = document.getElementById('myCanvas');
+            var btn_clear = document.getElementById('btnClear');
+            var btn_predict = document.getElementById('btnPredict');
+            var output = document.getElementById("output");
+
+            paper.setup(my_canvas);            
+            var tool = new Tool();
+            var path;
+            var rect = new Path.Rectangle({
+                point: [0, 0],
+                size: [view.size.width, view.size.height],
+                strokeColor: '#000',
+                selected: true
+            });
+            rect.sendToBack();
+            rect.fillColor = "#ddd";
+            
+            // clear button
+            btn_clear.onclick = function(event) {
+                project.activeLayer.remove();
+                // reconstruct the rect
+                var rect = new Path.Rectangle({
+                    point: [0, 0],
+                    size: [view.size.width, view.size.height],
+                    strokeColor: '#000',
+                    selected: true
+                });
+                rect.sendToBack();
+                rect.fillColor = "#ddd";
+            }
+
+            // predict button
+            btn_predict.onclick = function(event) {
+                var imageData = my_canvas.toDataURL("image/jpeg");
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: {
+                        image: imageData
+                    },
+                    success: function(data){
+                        output.innerHTML = data.output;
+
+                    },error: function(error){
+                        alert(error)
+                    }
+                });
+            }
+
+            // define mousedown and mousedrage handler
+            tool.onMouseDown = function(event) {
+                path = new Path();
+                path.strokeColor = '#000';
+                path.strokeWidth = '5';
+                path.add(event.point);
+            }
+
+            tool.onMouseDrag = function(event) {
+                path.add(event.point);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <canvas id="myCanvas" resize width="600" height="550"></canvas>
+        <div class="result">
+            <button id="btnClear" class="btn clear">Clear</button>
+            <button id="btnPredict" class="btn predict">Predict</button>
+            <h1>Predicted Result: <span id="output"></span></h1>
+        </div>
+    </div>
+</body>
+</html>
