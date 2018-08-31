@@ -6,40 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HWDR</title>
-    <style type="text/css">
-        .container {
-            display: flex;
-            flex-direction: row;
-            margin: 50px;
-            padding: 10px;   
-        }
-        .result {
-            margin-left: 50px;
-        }
-        .btn {
-            width: 100px;
-            height: 50px;
-            border-radius: 7px;
-            border: 1px solid #fff;
-            outline: none
-        }
-        .clear {
-            background: green;
-        }
-        .predict {
-            background: steelblue;
-        }
-        .clear:hover {
-            background: #fff;
-            color: green;
-            transition: 0.7s all;
-        }
-        .predict:hover {
-            background: #fff;
-            color: steelblue;
-            transition: 0.7s all
-        }
-    </style>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script
         src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -112,12 +82,26 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <canvas id="myCanvas" resize width="600" height="550"></canvas>
-        <div class="result">
-            <button id="btnClear" class="btn clear">Clear</button>
-            <button id="btnPredict" class="btn predict">Predict</button>
-            <h1>Predicted Result: <span id="output"></span></h1>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Predicted Result: <small><span id="output"></span></small></h1>
+        </div>
+        <div class="col-md-6">
+            <canvas id="myCanvas" resize width="600" height="500"></canvas>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+            </div>
+            <div class="row">
+                <div class="jumbotron">
+                    <h2>Handwritten Digit Recognition</h2>
+                    <br>
+                    <p style="font-size: 17px">- Write digits to the canvas on the left and we will predict the digits you just wrote...</p>
+                    <br>
+                    <button id="btnClear" class="btn btn-lg btn-danger">Clear</button>
+                    <button id="btnPredict" class="btn btn-lg btn-primary">Predict</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>
